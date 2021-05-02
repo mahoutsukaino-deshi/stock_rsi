@@ -24,6 +24,7 @@ def get_stock(ticker, start_date, end_date):
     else:
         df_stock = pandas_datareader.data.DataReader(
             ticker, 'yahoo', start_date, end_date)
+        df_stock.to_pickle(fname)
     return df_stock
 
 

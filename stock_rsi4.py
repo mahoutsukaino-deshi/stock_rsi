@@ -25,14 +25,11 @@ def get_stock(ticker, start_date, end_date):
     os.makedirs(dirname, exist_ok=True)
     period = f"{start_date.strftime('%Y%m%d')}_{end_date.strftime('%Y%m%d')}"
     fname = f'{dirname}/{ticker}_{period}.pkl'
-    df_stock = pd.DataFrame()
     if os.path.exists(fname):
         df_stock = pd.read_pickle(fname)
-        start_date = df_stock.index.max() + datetime.timedelta(days=1)
-    if end_date > start_date:
-        df = pandas_datareader.data.DataReader(
+    else:
+        df_stock = pandas_datareader.data.DataReader(
             ticker, 'yahoo', start_date, end_date)
-        df_stock = pd.concat([df_stock, df[~df.index.isin(df_stock.index)]])
         df_stock.to_pickle(fname)
     return df_stock
 
